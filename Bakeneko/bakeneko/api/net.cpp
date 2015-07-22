@@ -27,11 +27,11 @@ namespace bakeneko {
 	}
 
 	std::string HTTPClientLite::receive() {
-		std::string resp		 = "";
+		std::string resp         = "";
 		char buf[DEFAULT_BUFLEN] = {};
 
 		while(1) {
-			int			received = 0;
+			int         received = 0;
 			std::string respLine = "";
 
 			received = recv(m_sock, buf, DEFAULT_BUFLEN, 0);
@@ -43,9 +43,9 @@ namespace bakeneko {
 	}
 
 	std::string HTTPClientLite::get(std::string const& query) {
-		WSADATA		wsaData;
+		WSADATA     wsaData;
 		SOCKADDR_IN sockAddr = {};
-		int			offset	 = std::string::npos;
+		int         offset   = std::string::npos;
 		std::string response = "";
 
 		if (WSAStartup(MAKEWORD(2, 2), &wsaData) == 0) {

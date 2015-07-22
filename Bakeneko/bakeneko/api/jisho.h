@@ -26,19 +26,19 @@
 #include "../data/data.h"
 
 const std::string  API_HOSTNAME = "jisho.org";
-const std::string  API_PATH	    = "/api/v1/search/words?keyword=";
+const std::string  API_PATH     = "/api/v1/search/words?keyword=";
 
 namespace bakeneko {
 
 class JishoData {
 public:
-	std::string				 word = "";
+	std::string              word = "";
 	std::vector<std::string> fields;
 
 	JishoData() { };
 	~JishoData() { };
 
-	Data		toData(); 
+	Data        toData(); 
 	std::string toString();
 };
 

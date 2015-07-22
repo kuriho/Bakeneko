@@ -35,13 +35,13 @@ Window& Window::getWindow() {
 }
 
 HWND Window::create(HINSTANCE hInstance, LPVOID app, WNDPROC const& wndProc) {
-	m_hInstance			= hInstance;
+	m_hInstance         = hInstance;
 
-	WNDCLASSEX wclx		= { 0 };
-	wclx.cbSize			= sizeof(wclx);
-	wclx.lpfnWndProc	= wndProc;
-	wclx.hInstance		= hInstance;
-	wclx.lpszClassName	= WINDOWCLASS_NAME;
+	WNDCLASSEX wclx     = { 0 };
+	wclx.cbSize         = sizeof(wclx);
+	wclx.lpfnWndProc    = wndProc;
+	wclx.hInstance      = hInstance;
+	wclx.lpszClassName  = WINDOWCLASS_NAME;
 	RegisterClassEx(&wclx);
 
 	return m_hWnd = CreateWindowEx(WS_EX_APPWINDOW, WINDOWCLASS_NAME, 0, 0, 0, 0, 0, 0, HWND_MESSAGE, 0, hInstance, app);

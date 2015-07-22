@@ -24,7 +24,7 @@ namespace bakeneko {
 
 Data JishoData::toData() {
 	Data data;
-	data.word	 = word;
+	data.word    = word;
 	data.strData = toString();
 	return data;
 }
@@ -46,6 +46,7 @@ JishoData JishoAPI::lookUp(std::string const& word) {
 	JishoData data;
 	data.word           = json.get(1, (std::string)"japanese", (std::string)"word");
 	data.fields.push_back(json.get(1, (std::string)"japanese", (std::string)"reading"));
+	data.fields.push_back(json.get(1, (std::string)"parts_of_speech"));
 	data.fields.push_back(json.get(1, (std::string)"english_definitions"));
 	//@TODO: additional fields...
 

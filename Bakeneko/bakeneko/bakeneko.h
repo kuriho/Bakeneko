@@ -44,18 +44,18 @@ public:
 	bool saveFileDialog();
 
 protected:
-	std::atomic<bool>		 isFetching = false;
-	std::queue<std::wstring> m_basket	= {};
+	std::atomic<bool> isFetching = false;
+	std::queue<std::wstring> m_basket = {};
 
 	void fetch(std::wstring word);
 
 private:
-	HWND		 m_hWndNext = NULL;
-	HWND		 m_hWnd	   = NULL;
-	Taskbar		 m_taskbar;
-	JishoAPI	 m_api;
-	DataMap		 m_data;
-	Exporter	 m_export;
+	HWND         m_hWndNext = NULL;
+	HWND         m_hWnd = NULL;
+	Taskbar      m_taskbar;
+	JishoAPI     m_api;
+	DataMap      m_data;
+	Exporter     m_export;
 	std::wstring m_filepath = L"C:/Bakeneko.tsv";
 
 	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

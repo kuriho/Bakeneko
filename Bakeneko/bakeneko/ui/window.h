@@ -29,11 +29,11 @@ namespace bakeneko {
 
 class Window {
 public:
-	static Window& getWindow();											  //@TODO: add WindowMap [ hWnd : Window& ]
+	static Window& getWindow();                                           //@TODO: add WindowMap [ hWnd : Window& ]
 	HWND create(HINSTANCE hInstance, LPVOID app, WNDPROC const& wndProc); //@TODO: add created Window to WindowMap
 
 private:
-	HWND	  m_hWnd	  = NULL;
+	HWND      m_hWnd      = NULL;
 	HINSTANCE m_hInstance = NULL;
 
 	Window() { };

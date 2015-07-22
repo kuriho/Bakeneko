@@ -41,7 +41,7 @@ namespace bakeneko {
 		std::string get(std::string const& query);
 
 	private:
-		SOCKET		m_sock = INVALID_SOCKET;
+		SOCKET      m_sock = INVALID_SOCKET;
 		std::string m_host = "";
 		std::string m_path = "";
 

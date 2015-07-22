@@ -24,12 +24,12 @@
 namespace bakeneko {
 
 BOOL Taskbar::create(HWND hwnd, LPCTSTR lpszTip) {
-	m_data.cbSize			= sizeof(NOTIFYICONDATA);
-	m_data.hWnd				= hwnd;
-	m_data.uID				= UM_TRAYICON;
-	m_data.uFlags			= 0|NIF_MESSAGE|NIF_ICON|NIF_TIP;
+	m_data.cbSize           = sizeof(NOTIFYICONDATA);
+	m_data.hWnd             = hwnd;
+	m_data.uID              = UM_TRAYICON;
+	m_data.uFlags           = 0|NIF_MESSAGE|NIF_ICON|NIF_TIP;
 	m_data.uCallbackMessage = UM_TRAYICON;
-	m_data.hIcon			= LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
+	m_data.hIcon            = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON1));
 	lstrcpyn(m_data.szTip, lpszTip, sizeof(m_data.szTip));
 
 	return !Shell_NotifyIcon(NIM_ADD, &m_data);
@@ -57,21 +57,21 @@ BOOL Taskbar::remove() {
 
 void Taskbar::showContext(HWND hwnd) {
 	MENUITEMINFO separator = { 0 };
-	HMENU		 hMenu	   = CreatePopupMenu();
+	HMENU        hMenu     = CreatePopupMenu();
 
-	separator.cbSize	   = sizeof(MENUITEMINFO);
-	separator.fMask		   = MIIM_FTYPE;
-	separator.fType		   = MFT_SEPARATOR;
+	separator.cbSize       = sizeof(MENUITEMINFO);
+	separator.fMask        = MIIM_FTYPE;
+	separator.fType        = MFT_SEPARATOR;
 
 	if (hMenu) {
 		POINT mousePos;
 
-		InsertMenu(hMenu, -1, MF_BYPOSITION			   , UM_EXPORT	, L"Export");
+		InsertMenu(hMenu, -1, MF_BYPOSITION,             UM_EXPORT,   L"Export");
 		InsertMenuItem(hMenu, -1, FALSE, &separator);
 		InsertMenu(hMenu, -1, MF_GRAYED | MF_BYPOSITION, UM_SETTINGS, L"Settings");
-		InsertMenu(hMenu, -1, MF_GRAYED | MF_BYPOSITION, UM_ABOUT	, L"About");
+		InsertMenu(hMenu, -1, MF_GRAYED | MF_BYPOSITION, UM_ABOUT   , L"About");
 		InsertMenuItem(hMenu, -1, FALSE, &separator);
-		InsertMenu(hMenu, -1, MF_BYPOSITION			   , UM_EXIT	, L"Exit");
+		InsertMenu(hMenu, -1, MF_BYPOSITION,             UM_EXIT    , L"Exit");
 		
 		GetCursorPos(&mousePos);
 		SetForegroundWindow(hwnd);

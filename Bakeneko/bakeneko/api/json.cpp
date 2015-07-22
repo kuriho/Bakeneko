@@ -49,7 +49,7 @@ namespace bakeneko{
 	std::string JSONBlob::findElem(std::string jsonStr, std::string elem) {
 		if (elem == "") return jsonStr;
 
-		std::regex	rgx(elem + ":([^,]+),?");
+		std::regex  rgx(elem + ":([^,]+),?");
 		std::smatch match;
 		while (std::regex_search(jsonStr, match, rgx)) {
 			return match[1];
@@ -60,17 +60,17 @@ namespace bakeneko{
 	}
 
 	JSONBlob JSONParserLite::parse(std::string& json) {
-		const		std::string is_common = "{\"is_common\":"; 
+		const std::string is_common = "{\"is_common\":"; 
+		const std::regex  rgx("\"(\\w+)\":\\[([^\\[\\]]+)\\]");
 
-		int			begin		= 0;
-		int			end			= 0;
-		int			dataCounter = 0;
-
-		std::regex	rgx("\"(\\w+)\":\\[([^\\[\\]]+)\\]");
-		JSONBlob	blob;
+		int   begin       = 0;
+		int   end         = 0;
+		int   dataCounter = 0;
+		
+		JSONBlob blob;
 
 		while (1) {
-			std::string	data = "";
+			std::string data = "";
 			std::smatch match;
 
 			if (end > begin) begin = end;
@@ -107,4 +107,4 @@ namespace bakeneko{
 		}
 		return blob;
 	}
-}
+};

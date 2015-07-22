@@ -25,12 +25,12 @@
 #include <shellapi.h>
 #include <string>
 
-#define UM_TRAYICON	(WM_USER+10)
-#define UM_EXPORT	(WM_USER+20)
+#define UM_TRAYICON (WM_USER+10)
+#define UM_EXPORT   (WM_USER+20)
 #define UM_SETTINGS (WM_USER+30)
-#define UM_ABOUT	(WM_USER+40)
-#define UM_BACKLOG	(WM_USER+50)
-#define UM_EXIT		(WM_USER+90)
+#define UM_ABOUT    (WM_USER+40)
+#define UM_BACKLOG  (WM_USER+50)
+#define UM_EXIT     (WM_USER+90)
 
 namespace bakeneko {
 class Taskbar{

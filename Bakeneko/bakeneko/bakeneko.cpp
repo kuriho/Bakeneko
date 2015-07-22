@@ -107,8 +107,8 @@ LRESULT Bakeneko::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_DRAWCLIPBOARD:
 		if (IsClipboardFormatAvailable(CF_UNICODETEXT) && m_hWnd != NULL) {
 			OpenClipboard(m_hWnd);
-			HGLOBAL		hClipboard  = GetClipboardData(CF_UNICODETEXT);
-			WCHAR*		clipWBuffer = (WCHAR*)GlobalLock(hClipboard);
+			HGLOBAL hClipboard  = GetClipboardData(CF_UNICODETEXT);
+			WCHAR*  clipWBuffer = (WCHAR*)GlobalLock(hClipboard);
 
 			m_basket.push((std::wstring)clipWBuffer);
 
@@ -148,11 +148,11 @@ bool Bakeneko::saveFileDialog() {
 
 	OPENFILENAME ofn = { sizeof ofn };
 
-	ofn.lpstrFile	= file;
-	ofn.nMaxFile	= 1024;
+	ofn.lpstrFile   = file;
+	ofn.nMaxFile    = 1024;
 	ofn.lpstrFilter = L"Tab-separated values\0 * .tsv\0\0";
-	ofn.lpstrTitle	= L"Save File Dialog";
-	ofn.Flags		= OFN_EXPLORER;
+	ofn.lpstrTitle  = L"Save File Dialog";
+	ofn.Flags       = OFN_EXPLORER;
 	
 	GetSaveFileName(&ofn);
 	m_filepath = file;
