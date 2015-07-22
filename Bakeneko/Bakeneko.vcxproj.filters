@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\bakeneko.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\api\jisho.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\api\json.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\api\net.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\data\data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\data\export.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\ui\taskbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\ui\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bakeneko\bakeneko.h" />
+    <ClInclude Include="bakeneko\api\jisho.h" />
+    <ClInclude Include="bakeneko\api\json.h" />
+    <ClInclude Include="bakeneko\api\net.h" />
+    <ClInclude Include="bakeneko\data\data.h" />
+    <ClInclude Include="bakeneko\data\export.h" />
+    <ClInclude Include="bakeneko\ui\taskbar.h" />
+    <ClInclude Include="bakeneko\ui\window.h" />
+    <ClInclude Include="bakeneko\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="bakeneko\Bakeneko.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bakeneko\Chen.ico" />
+  </ItemGroup>
+</Project>
