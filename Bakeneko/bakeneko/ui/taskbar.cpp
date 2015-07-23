@@ -24,7 +24,7 @@
 namespace bakeneko {
 
 BOOL Taskbar::create(HWND hwnd, LPCTSTR lpszTip) {
-	m_data.cbSize           = sizeof(NOTIFYICONDATA);
+	m_data.cbSize           = NOTIFYICONDATAW_V2_SIZE;
 	m_data.hWnd             = hwnd;
 	m_data.uID              = UM_TRAYICON;
 	m_data.uFlags           = 0|NIF_MESSAGE|NIF_ICON|NIF_TIP;

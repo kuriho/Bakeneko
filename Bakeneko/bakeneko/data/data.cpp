@@ -22,14 +22,12 @@
 
 namespace bakeneko {
 	BOOL DataMap::add(Data const& newData) {
-		bool added = false;
-
 		if (newData.word != "" && !exists(newData)) {
 			m_map_data.push_back(newData);
-			added = true;
+			return true;
 		};
 
-		return added;
+		return false;
 	};
 
 	void DataMap::remove(Data const& data) {

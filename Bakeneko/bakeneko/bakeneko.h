@@ -42,7 +42,7 @@ public:
 
 	int  run(HINSTANCE hInstance);
 	bool saveFileDialog();
-
+	
 protected:
 	std::atomic<bool> isFetching = false;
 	std::queue<std::wstring> m_basket = {};
