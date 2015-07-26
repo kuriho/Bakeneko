@@ -41,19 +41,29 @@ std::string JishoData::toString() {
 	return dataString;
 }
 
-JishoData JishoAPI::lookUp(std::string const& word) {
-	JSONBlob  json = m_json.parse(m_http.get(word));
+std::vector<Data> JishoAPI::lookUp(std::string const& word) {
+	std::vector<Data> result;
+	std::vector<int>  relevant = { 1 };
 
-	//@TODO: JSON 1:n data
-	JishoData data;
-	data.word           =  json.get(1, (std::string)"japanese", (std::string)"word");
-	data.fields.push_back( json.get(1, (std::string)"japanese", (std::string)"reading") );
-	data.fields.push_back( utf::fromUTF32To8( jp::addRuby( utf::fromUTF8to32(data.word), utf::fromUTF8to32(data.fields[0]) ) ) );
-	data.fields.push_back( json.get(1, (std::string)"parts_of_speech") );
-	data.fields.push_back( json.get(1, (std::string)"english_definitions") );
-	//@TODO: additional fields...
+	JSONBlob json = m_json.parse(m_http.get(word));
 
-	return data; 
+	//@TODO: Let user decide what fields + which results to grab
+	if (json.m_commonIdx.size() != 0)
+		relevant = json.m_commonIdx;
+
+	for (int i : relevant) {
+		JishoData jishoData;
+		jishoData.word =           json.get(i, API_KEY_JP, API_ELEM_WORD, AccessMode::First);
+		jishoData.fields.push_back(json.get(i, API_KEY_JP, API_ELEM_READ, AccessMode::First));
+		jishoData.fields.push_back(utf::fromUTF32To8(jp::addRuby(utf::fromUTF8to32(jishoData.word), utf::fromUTF8to32(jishoData.fields[0]))));
+		jishoData.fields.push_back(json.get(i, API_KEY_POS, AccessMode::First));
+		jishoData.fields.push_back(json.get(i, API_KEY_ENG));
+		//@TODO: additional fields...
+
+		result.push_back(jishoData.toData());
+	}
+
+	return result;
 }
 
 }; // namespace bakeneko

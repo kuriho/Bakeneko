@@ -46,6 +46,7 @@ namespace bakeneko {
 		~DataMap() { };
 
 		BOOL add(Data const& newData);
+		BOOL add(std::vector<Data> const& newDataList);
 		void remove(Data const& data);
 		BOOL exists(Data const& data);
 		BOOL exists(std::string const& data);

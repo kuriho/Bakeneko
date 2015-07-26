@@ -43,7 +43,8 @@ int Bakeneko::run(HINSTANCE hInstance) {
 void Bakeneko::fetch(std::wstring word) {
 	try {
 
-		if (m_data.add( m_api.lookUp(utf::fromWidetoUTF8(word)).toData() ))	
+		//@TODO: sanitize input
+		if ( m_data.add( m_api.lookUp(utf::fromWidetoUTF8(word)) ) )
 			m_taskbar.honk(word);
 
 	} catch (...) { /* obligatory note to handle exceptions later */ }
@@ -104,7 +105,8 @@ LRESULT Bakeneko::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			HGLOBAL hClipboard  = GetClipboardData(CF_UNICODETEXT);
 			WCHAR*  clipWBuffer = (WCHAR*)GlobalLock(hClipboard);
 
-			m_basket.push((std::wstring)clipWBuffer);
+			if(clipWBuffer != nullptr)
+				m_basket.push((std::wstring)clipWBuffer);
 
 			GlobalUnlock(hClipboard);
 			CloseClipboard();
@@ -151,7 +153,7 @@ bool Bakeneko::saveFileDialog() {
 	GetSaveFileName(&ofn);
 	m_filepath = file;
 
-	//@TODO: somehow free up memory consumed by windows shell objects -> open it in a new thread?
+	//@TODO: Somehow free up memory consumed by windows shell objects.
 	return (m_filepath != L"");
 }
 

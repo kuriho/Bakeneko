@@ -20,39 +20,81 @@
 
 #include "json.h"
 #include <algorithm>
+#include <sstream>
 #include <regex>
+#include "..\util\unicode.h"
 
 namespace bakeneko{
 	void JSONBlob::add(int index, std::string const& key, std::string value) {	
 		value.erase(std::remove(value.begin(), value.end(), '"'), value.end());
+		value.erase(std::remove(value.begin(), value.end(), '\t'), value.end());
+		value.erase(std::remove(value.begin(), value.end(), '\n'), value.end());
+		value.erase(std::remove(value.begin(), value.end(), '\r'), value.end());
+
 		m_data[index][key].push_back(value);
 	}
 
-	std::string JSONBlob::get(int pos, std::string const& key, std::string const& elem) {
+	std::string JSONBlob::get(int pos, std::string const& key, std::string const& elem, AccessMode mode, int item) {
+		if (mode == AccessMode::Exact && item == NULL) return ""; //usage error
+
 		if (m_data.find(pos) != m_data.end()) {
 			if (m_data.at(pos).find(key) != m_data.at(pos).end()) {
-				return findElem(m_data.at(pos).at(key)[0], elem);
+					return findElem(m_data.at(pos).at(key)[0], elem, mode, item);
 			}
 		}
 		return "";
 	}
 
-	std::string JSONBlob::get(int pos, std::string const& key) {
+	std::string JSONBlob::get(int pos, std::string const& key, AccessMode mode, int item) {
+		if (mode == AccessMode::Exact && item == NULL) return ""; //usage error
+
 		if (m_data.find(pos) != m_data.end()) {
 			if (m_data.at(pos).find(key) != m_data.at(pos).end()) {
-				return m_data.at(pos).at(key)[0]; 
+				switch (mode) {
+				case AccessMode::First:
+					item = 1;
+					//intentional fallthrough
+
+				case AccessMode::Exact:
+					if (item > m_data.at(pos).at(key).size()) {
+						return "";
+					} else {
+						return m_data.at(pos).at(key)[item - 1];
+					}
+
+				case AccessMode::All:
+					if (m_data.at(pos).at(key).size() == 1) {
+						return m_data.at(pos).at(key)[0];
+					} else {
+						static std::string br = utf::fromWidetoUTF8(L"<br>");
+						std::ostringstream os;
+
+						for (int i = 0; i < m_data.at(pos).at(key).size(); ++i) {
+							os << m_data.at(pos).at(key)[i];
+							if (i != m_data.at(pos).at(key).size() - 1)
+								os << br;
+						}
+						return os.str();
+					}
+				}
 			}
 		}
 		return "";
 	}
 
-	std::string JSONBlob::findElem(std::string jsonStr, std::string elem) {
-		if (elem == "") return jsonStr;
+	std::string JSONBlob::findElem(std::string jsonStr, std::string elem, AccessMode mode, int item) {
+		if (elem == "")	  return jsonStr;
+		if (mode == AccessMode::All) return ""; //not required right now
+		if (mode == AccessMode::Exact && item == NULL) return ""; //usage error
+		if (mode == AccessMode::First) item = 1;
 
 		std::regex  rgx(elem + ":([^,]+),?");
 		std::smatch match;
+		int counter = 0;
+
 		while (std::regex_search(jsonStr, match, rgx)) {
-			return match[1];
+			counter++;
+			if (item == counter) return match[1];
 		}
 
 		return "";
@@ -63,40 +105,43 @@ namespace bakeneko{
 		const std::string is_common = "{\"is_common\":"; 
 		const std::regex  rgx("\"(\\w+)\":\\[([^\\[\\]]+)\\]");
 
-		int   begin       = 0;
-		int   end         = 0;
-		int   dataCounter = 0;
+		int   begin        = 0;
+		int   end          = 0;
+		int   dataCounter  = 0;
+		std::string common = "";
 		
 		JSONBlob blob;
 
-		while (1) {
+		for (;;) {
 			std::string data = "";
 			std::smatch match;
 
 			if (end > begin) begin = end;
 
 			if (begin == 0) {
-				//find first word
+				//find first result
 				begin = json.find(is_common, begin);
 				if (begin == std::string::npos) break;
 			}
 
-			//find next word
+			//find next result
 			end = json.find(is_common, begin + is_common.length());
 			if (end == std::string::npos) end = json.length();
 			if (end <= begin) break; //EOS
 
-			//only extract common words for now
-			if (json.substr(begin+is_common.length(),4) != "true") continue;
+			//optimistically increment dataCounter
+			dataCounter++;
+
+			//index common results
+			if (json.substr(begin + is_common.length(), 4) == "true") {
+				blob.m_commonIdx.push_back(dataCounter);
+			}
 
 			data.assign(json, begin, end - begin);
 
 			//flatten JSON
 			data.erase(std::remove(data.begin(), data.end(), '{'), data.end());
 			data.erase(std::remove(data.begin(), data.end(), '}'), data.end());
-
-			//optimistically increment dataCounter
-			dataCounter++;
 
 			//add data from non-empty JSON arrays to blob
 			while(std::regex_search(data, match, rgx)) {

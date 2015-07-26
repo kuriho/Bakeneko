@@ -26,18 +26,21 @@
 #include <map>
 
 namespace bakeneko {
+	enum AccessMode { First, Exact, All };
+
 	class JSONBlob {
 	public:
 		std::map< int, std::map< std::string, std::vector<std::string> > > m_data;
+		std::vector<int> m_commonIdx;
 
 		JSONBlob() { };
 
 		void add(int index, std::string const& key, std::string value);
-		std::string get(int pos, std::string const& key, std::string const& elem);
-		std::string get(int pos, std::string const& key);
+		std::string get(int pos, std::string const& key, std::string const& elem, AccessMode mode = AccessMode::All, int item = NULL);
+		std::string get(int pos, std::string const& key,                          AccessMode mode = AccessMode::All, int item = NULL);
 
 	private:
-		std::string findElem(std::string jsonStr, std::string elem);
+		std::string findElem(std::string jsonStr, std::string elem, AccessMode mode, int item = NULL);
 	};
 
 	class JSONParserLite {

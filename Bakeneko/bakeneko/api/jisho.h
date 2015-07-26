@@ -25,12 +25,18 @@
 #include "json.h"
 #include "../data/data.h"
 
-const std::string  API_HOSTNAME = "jisho.org";
-const std::string  API_PATH     = "/api/v1/search/words?keyword=";
+const std::string  API_HOSTNAME   = "jisho.org";
+const std::string  API_PATH       = "/api/v1/search/words?keyword=";
+
+const std::string  API_KEY_JP    = "japanese";
+const std::string  API_ELEM_WORD = "word";
+const std::string  API_ELEM_READ = "reading";
+const std::string  API_KEY_POS   = "parts_of_speech";
+const std::string  API_KEY_ENG   = "english_definitions";
 
 namespace bakeneko {
 
-class JishoData {
+class JishoData { 
 public:
 	std::string              word = "";
 	std::vector<std::string> fields;
@@ -47,7 +53,7 @@ public:
 	JishoAPI(){ m_http.init(API_HOSTNAME, API_PATH); };
 	~JishoAPI() { };
 
-	JishoData lookUp(std::string const& word);
+	std::vector<Data> lookUp(std::string const& word);
 
 private:
 	JSONParserLite m_json;

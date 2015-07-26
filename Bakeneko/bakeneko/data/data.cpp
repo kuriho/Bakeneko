@@ -26,9 +26,16 @@ namespace bakeneko {
 			m_map_data.push_back(newData);
 			return true;
 		};
-
 		return false;
 	};
+
+	BOOL DataMap::add(std::vector<Data> const& newDataList) {
+		bool success = false;
+		for (Data const& newData : newDataList) {
+			if (add(newData)) success = true;
+		}
+		return success;
+	}
 
 	void DataMap::remove(Data const& data) {
 		if (exists(data)) {
