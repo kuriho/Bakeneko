@@ -56,12 +56,4 @@ JishoData JishoAPI::lookUp(std::string const& word) {
 	return data; 
 }
 
-std::string JishoAPI::addRuby(std::string word, std::string reading) {
-	//@TODO: add furigana from word+reading like: ä‘Ç…çáÇ§ + Ç‹Ç…Ç†Ç§ = ä‘[Ç‹]Ç…çá[Ç†]Ç§  
-	//Reference: http://www.rikai.com/library/kanjitables/kanji_codes.unicode.shtml
-
-	std::string ruby = "";
-	return ruby;
-}
-
 }; // namespace bakeneko

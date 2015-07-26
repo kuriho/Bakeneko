@@ -50,8 +50,6 @@ public:
 	JishoData lookUp(std::string const& word);
 
 private:
-	std::string addRuby(std::string word, std::string reading);
-
 	JSONParserLite m_json;
 	HTTPClientLite m_http;
 };
