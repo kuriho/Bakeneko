@@ -43,16 +43,14 @@ std::string JishoData::toString() {
 
 JishoData JishoAPI::lookUp(std::string const& word) {
 	JSONBlob  json = m_json.parse(m_http.get(word));
-	std::string u8word;
-	std::string u8read;
 
 	//@TODO: JSON 1:n data
 	JishoData data;
-	data.word           =  u8word = json.get(1, (std::string)"japanese", (std::string)"word");
-	data.fields.push_back( u8read = json.get(1, (std::string)"japanese", (std::string)"reading") );
-	data.fields.push_back( utf::fromUTF32To8( jp::addRuby( utf::fromUTF8to32(u8word), utf::fromUTF8to32(u8read) ) ) );
-	data.fields.push_back(json.get(1, (std::string)"parts_of_speech"));
-	data.fields.push_back(json.get(1, (std::string)"english_definitions"));
+	data.word           =  json.get(1, (std::string)"japanese", (std::string)"word");
+	data.fields.push_back( json.get(1, (std::string)"japanese", (std::string)"reading") );
+	data.fields.push_back( utf::fromUTF32To8( jp::addRuby( utf::fromUTF8to32(data.word), utf::fromUTF8to32(data.fields[0]) ) ) );
+	data.fields.push_back( json.get(1, (std::string)"parts_of_speech") );
+	data.fields.push_back( json.get(1, (std::string)"english_definitions") );
 	//@TODO: additional fields...
 
 	return data; 
