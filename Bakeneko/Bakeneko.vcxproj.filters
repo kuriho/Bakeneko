@@ -34,6 +34,12 @@
     <ClCompile Include="bakeneko\ui\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bakeneko\util\unicode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bakeneko\util\japanese.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bakeneko\bakeneko.h" />
@@ -45,6 +51,8 @@
     <ClInclude Include="bakeneko\ui\taskbar.h" />
     <ClInclude Include="bakeneko\ui\window.h" />
     <ClInclude Include="bakeneko\resource.h" />
+    <ClInclude Include="bakeneko\util\japanese.h" />
+    <ClInclude Include="bakeneko\util\unicode.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="bakeneko\Bakeneko.rc" />

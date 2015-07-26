@@ -90,6 +90,8 @@
     <ClCompile Include="bakeneko\api\net.cpp" />
     <ClCompile Include="bakeneko\ui\taskbar.cpp" />
     <ClCompile Include="bakeneko\ui\window.cpp" />
+    <ClCompile Include="bakeneko\util\japanese.cpp" />
+    <ClCompile Include="bakeneko\util\unicode.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +104,8 @@
     <ClInclude Include="bakeneko\resource.h" />
     <ClInclude Include="bakeneko\ui\taskbar.h" />
     <ClInclude Include="bakeneko\ui\window.h" />
+    <ClInclude Include="bakeneko\util\japanese.h" />
+    <ClInclude Include="bakeneko\util\unicode.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="bakeneko\Bakeneko.rc" />

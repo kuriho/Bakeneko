@@ -21,6 +21,7 @@
 #include "bakeneko.h"
 #include "ui\window.h"
 #include <thread>
+#include "util\unicode.h"
 
 bakeneko::Bakeneko Chen;
 
@@ -41,16 +42,9 @@ int Bakeneko::run(HINSTANCE hInstance) {
 
 void Bakeneko::fetch(std::wstring word) {
 	try {
-		//UTF8 Conversion
-		int nSize = ::WideCharToMultiByte(CP_UTF8, 0, word.c_str(), (int)word.size(), NULL, 0, NULL, NULL);
-		if ( nSize != 0 ) {
-			std::string utf8Word;
-			utf8Word.resize(nSize);
-			::WideCharToMultiByte(CP_UTF8, 0, word.c_str(), (int)word.size(), const_cast<char*>(utf8Word.c_str()), nSize, NULL, NULL);
 
-			if (m_data.add( m_api.lookUp(utf8Word).toData() )) 
-				m_taskbar.honk(word);
-		}
+		if (m_data.add( m_api.lookUp(utf::fromWidetoUTF8(word)).toData() ))	
+			m_taskbar.honk(word);
 
 	} catch (...) { /* obligatory note to handle exceptions later */ }
 
