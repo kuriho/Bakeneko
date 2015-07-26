@@ -1,6 +1,6 @@
-/*
-** Bakeneko ‰»‚¯”L
-** Copyright 2015 by ƒNƒŠƒz https://twitter.com/ch_kuriho
+ï»¿/*
+** Bakeneko åŒ–ã‘çŒ«
+** Copyright 2015 by ã‚¯ãƒªãƒ› https://twitter.com/ch_kuriho
 **
 ** This file is part of Bakeneko.
 **
@@ -69,7 +69,7 @@ namespace jp {
 						break;
 					}
 
-					if (!(hanzi(*(it + i)) || (__int32)*(it + i) == 12293)) { //X
+					if (!(hanzi(*(it + i)) || (__int32)*(it + i) == 12293)) { //ã€…
 						trailing += *(it + i);
 						continue;
 					}

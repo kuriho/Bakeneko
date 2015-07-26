@@ -1,6 +1,6 @@
-/*
-** Bakeneko ‰»‚¯”L
-** Copyright 2015 by ƒNƒŠƒz https://twitter.com/ch_kuriho
+ï»¿/*
+** Bakeneko åŒ–ã‘çŒ«
+** Copyright 2015 by ã‚¯ãƒªãƒ› https://twitter.com/ch_kuriho
 **
 ** This file is part of Bakeneko.
 **
