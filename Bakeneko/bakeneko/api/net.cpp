@@ -29,27 +29,50 @@ namespace bakeneko {
 		std::string resp         = "";
 		char buf[DEFAULT_BUFLEN] = {};
 
-		while(1) {
+		for (;;) {
 			int         received = 0;
 			std::string respLine = "";
 
 			received = recv(sock, buf, DEFAULT_BUFLEN, 0);
-			if (received <= 0) break;
+			if (received == 0) break;
+			if (received == SOCKET_ERROR) {
+				return "";
+			}
 			resp += respLine.assign(buf, received);
 		}
 
 		return resp;
 	}
 
+	void HTTPClientLite::removeHeader(std::string & response) {
+		if (response != "") {
+			int offset = std::string::npos;
+
+			// remove HTTP Header
+			if ((offset = response.find_first_of("{", response.find("\r\n\r\n"))) != std::string::npos) {
+				response.erase(0, offset);
+			}
+
+			// remove trailing noise
+			if ((offset = response.find_last_of("}")) != std::string::npos && offset != (response.length() - 1)) {
+				response.erase(offset + 1, std::string::npos);
+			}
+		}
+	}
+
 	std::string HTTPClientLite::get(std::string const& query) {
 		WSADATA     wsaData;
 		SOCKADDR_IN sockAddr = {};
-		int         offset   = std::string::npos;
-		std::string response = "";
-		SOCKET      sock     = INVALID_SOCKET;
 
+		std::string response = "";
+		
 		if (WSAStartup(MAKEWORD(2, 2), &wsaData) == 0) {
-			sock = socket(AF_INET, SOCK_STREAM, 0);
+			static const DWORD timeout = 10000;
+
+			SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+
+			setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
+			setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (char*)&timeout, sizeof(timeout));
 
 			sockAddr.sin_port = htons(DEFAULT_PORT);
 			sockAddr.sin_family = AF_INET;
@@ -66,20 +89,12 @@ namespace bakeneko {
 			sendLine(sock, "\n");
 
 			response = receive(sock);
-
-			// remove HTTP Header
-			if ((offset = response.find_first_of("{", response.find("\r\n\r\n"))) != std::string::npos) {
-				response.erase(0, offset);	
-			}
-
-			// remove trailing noise
-			if ((offset = response.find_last_of("}")) != std::string::npos && offset != (response.length() - 1) ) {
-				response.erase(offset + 1, std::string::npos);
-			}
+			removeHeader(response);
 
 			closesocket(sock);
 			WSACleanup();
 		}
+
 		return response;
 	}
 }; // namespace bakeneko

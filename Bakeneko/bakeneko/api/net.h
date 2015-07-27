@@ -44,6 +44,7 @@ namespace bakeneko {
 		std::string m_host = "";
 		std::string m_path = "";
 
+		void removeHeader(std::string & response);
 		void sendLine(SOCKET const& sock, std::string const& line);
 		std::string receive(SOCKET const& sock);
 	};
