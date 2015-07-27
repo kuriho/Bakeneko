@@ -108,7 +108,6 @@ namespace bakeneko{
 		int   begin        = 0;
 		int   end          = 0;
 		int   dataCounter  = 0;
-		std::string common = "";
 		
 		JSONBlob blob;
 

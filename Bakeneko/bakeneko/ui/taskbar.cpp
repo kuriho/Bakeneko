@@ -36,18 +36,19 @@ BOOL Taskbar::create(HWND hwnd, LPCTSTR lpszTip) {
 }
 
 BOOL Taskbar::honk(std::wstring text) {
-	if (text != L"") {
-		if (text.size() > 255) {
-			text.erase(252, std::wstring::npos);
-			text += L"...";
-		}
+	if (text == L"") return false;
 
-		m_data.uFlags	   = NIF_INFO;
-		m_data.dwInfoFlags = NIIF_INFO;
-		m_data.uTimeout	   = 500;
-		lstrcpy(m_data.szInfo, text.c_str());
-		lstrcpy(m_data.szInfoTitle, (LPWSTR)L"HONK! HONK!");
+	if (text.size() > 255) {
+		text.erase(252, std::wstring::npos);
+		text += L"...";
 	}
+
+	m_data.uFlags	   = NIF_INFO;
+	m_data.dwInfoFlags = NIIF_INFO;
+	m_data.uTimeout	   = 500;
+	lstrcpy(m_data.szInfo, text.c_str());
+	lstrcpy(m_data.szInfoTitle, (LPWSTR)L"HONK! HONK!");
+
 	return !Shell_NotifyIcon(NIM_MODIFY, &m_data);
 }
 
@@ -66,7 +67,8 @@ void Taskbar::showContext(HWND hwnd) {
 	if (hMenu) {
 		POINT mousePos;
 
-		InsertMenu(hMenu, -1, MF_BYPOSITION,             UM_EXPORT,   L"Export");
+		InsertMenu(hMenu, -1, MF_BYPOSITION,             UM_EXPORT,   L"Export...");
+		InsertMenu(hMenu, -1, MF_GRAYED | MF_BYPOSITION, UM_IMPORT,   L"Import...");
 		InsertMenuItem(hMenu, -1, FALSE, &separator);
 		InsertMenu(hMenu, -1, MF_GRAYED | MF_BYPOSITION, UM_SETTINGS, L"Settings");
 		InsertMenu(hMenu, -1, MF_GRAYED | MF_BYPOSITION, UM_ABOUT   , L"About");

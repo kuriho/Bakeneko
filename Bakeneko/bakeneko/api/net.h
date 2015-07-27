@@ -41,12 +41,11 @@ namespace bakeneko {
 		std::string get(std::string const& query);
 
 	private:
-		SOCKET      m_sock = INVALID_SOCKET;
 		std::string m_host = "";
 		std::string m_path = "";
 
-		void sendLine(std::string line);
-		std::string receive();
+		void sendLine(SOCKET const& sock, std::string const& line);
+		std::string receive(SOCKET const& sock);
 	};
 }; // namespace bakeneko
 

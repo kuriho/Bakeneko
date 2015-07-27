@@ -27,6 +27,7 @@
 
 #define UM_TRAYICON (WM_USER+10)
 #define UM_EXPORT   (WM_USER+20)
+#define UM_IMPORT   (WM_USER+25)
 #define UM_SETTINGS (WM_USER+30)
 #define UM_ABOUT    (WM_USER+40)
 #define UM_BACKLOG  (WM_USER+50)

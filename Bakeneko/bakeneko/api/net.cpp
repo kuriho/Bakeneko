@@ -21,12 +21,11 @@
 #include "net.h"
 
 namespace bakeneko {
-	void HTTPClientLite::sendLine(std::string line) {
-		line += '\n';
-		send(m_sock, line.c_str(), line.length(), 0);
+	void HTTPClientLite::sendLine(SOCKET const& sock, std::string const& line) {
+		send(sock, line.c_str(), line.length(), 0);
 	}
 
-	std::string HTTPClientLite::receive() {
+	std::string HTTPClientLite::receive(SOCKET const& sock) {
 		std::string resp         = "";
 		char buf[DEFAULT_BUFLEN] = {};
 
@@ -34,7 +33,7 @@ namespace bakeneko {
 			int         received = 0;
 			std::string respLine = "";
 
-			received = recv(m_sock, buf, DEFAULT_BUFLEN, 0);
+			received = recv(sock, buf, DEFAULT_BUFLEN, 0);
 			if (received <= 0) break;
 			resp += respLine.assign(buf, received);
 		}
@@ -47,25 +46,26 @@ namespace bakeneko {
 		SOCKADDR_IN sockAddr = {};
 		int         offset   = std::string::npos;
 		std::string response = "";
+		SOCKET      sock     = INVALID_SOCKET;
 
 		if (WSAStartup(MAKEWORD(2, 2), &wsaData) == 0) {
-			m_sock = socket(AF_INET, SOCK_STREAM, 0);
+			sock = socket(AF_INET, SOCK_STREAM, 0);
 
 			sockAddr.sin_port = htons(DEFAULT_PORT);
 			sockAddr.sin_family = AF_INET;
 			sockAddr.sin_addr.s_addr = *((unsigned long*)gethostbyname(m_host.c_str())->h_addr);
 			memset(&(sockAddr.sin_zero), 0, 8);
 
-			connect(m_sock, (SOCKADDR*) &sockAddr, sizeof(sockAddr));
+			connect(sock, (SOCKADDR*) &sockAddr, sizeof(sockAddr));
 
-			sendLine("GET "+ m_path + query + " HTTP/1.1");
-			sendLine("Host: " + m_host);
-			sendLine("User-agent: Bakeneko");
-			sendLine("Accept: application/json;q=0.9,text/html;q=0.8,*/*;q=0.7");
-			sendLine("Connection: close");
-			sendLine("");
+			sendLine(sock, "GET "+ m_path + query + " HTTP/1.1\n");
+			sendLine(sock, "Host: " + m_host + "\n");
+			sendLine(sock, "User-agent: Bakeneko\n");
+			sendLine(sock, "Accept: application/json;q=0.9,text/html;q=0.8,*/*;q=0.7\n");
+			sendLine(sock, "Connection: close\n");
+			sendLine(sock, "\n");
 
-			response = receive();
+			response = receive(sock);
 
 			// remove HTTP Header
 			if ((offset = response.find_first_of("{", response.find("\r\n\r\n"))) != std::string::npos) {
@@ -77,7 +77,7 @@ namespace bakeneko {
 				response.erase(offset + 1, std::string::npos);
 			}
 
-			closesocket(m_sock);
+			closesocket(sock);
 			WSACleanup();
 		}
 		return response;
